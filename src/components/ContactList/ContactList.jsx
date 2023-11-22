@@ -11,8 +11,10 @@ export const ContactsList = () => {
   const filterPhoneBook = useSelector(getFilter);
 
   const lowerFilter = filterPhoneBook.toLowerCase();
-  const visibleContacts = phoneBook.filter(({ name }) =>
-    name.toLowerCase().includes(lowerFilter)
+  const visibleContacts = phoneBook.filter(
+    ({ name, number }) =>
+      name.toLowerCase().includes(lowerFilter) ||
+      number.toLowerCase().includes(lowerFilter)
   );
 
   const deleteContact = contactId => {
