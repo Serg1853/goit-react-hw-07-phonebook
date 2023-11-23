@@ -1,21 +1,22 @@
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, getPhoneBookValue } from 'redux/phoneBookSlice';
+import { getPhoneBookValue } from 'redux/phoneBookSlice';
 import { FormStyle } from './ContactForm.styled';
 import { ButtonStyle, InputStyle, LabelStyle } from 'components/App.styled';
+import { postContactThunk } from 'components/services/fetchContacts';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setNumber] = useState('');
   const dispatch = useDispatch();
   const phoneBook = useSelector(getPhoneBookValue);
 
   const onSubmitAddContact = event => {
     event.preventDefault();
-    const data = { name, number };
-    const newObj = { ...data, id: nanoid() };
+    const newObj = { name, phone };
+    // const newObj = { ...data, id: nanoid() };
 
     if (isNameNew(phoneBook, newObj) !== undefined) {
       Notify.warning(`${newObj.name} is already in contacts`, {
@@ -27,7 +28,7 @@ export const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact(newObj));
+    dispatch(postContactThunk(newObj));
 
     reset();
   };
@@ -44,7 +45,7 @@ export const ContactForm = () => {
       case 'name':
         setName(value);
         break;
-      case 'number':
+      case 'phone':
         setNumber(value);
         break;
 
@@ -75,8 +76,8 @@ export const ContactForm = () => {
         Phone number
         <InputStyle
           type="tel"
-          name="number"
-          value={number}
+          name="phone"
+          value={phone}
           pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
           required
           onChange={onChangeInput}

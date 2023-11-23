@@ -1,30 +1,32 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
 const URL = 'https://655bb5d1ab37729791a98148.mockapi.io/contacts';
 
-const getContacts = async (_, thunkApi) => {
+const getContacts = async (_, thunkAPI) => {
   try {
     const response = await axios.get(URL);
     return response.data;
-  } catch (error) {
-    return thunkApi.rejectWithValue(error.message);
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e.message);
   }
 };
 
-const postContacts = async (newContact, thunkApi) => {
+const postContact = async (newContact, thunkAPI) => {
   try {
     const response = await axios.post(URL, newContact);
     return response.data;
-  } catch (error) {
-    return thunkApi.rejectWithValue(error.message);
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e.message);
   }
 };
-const delContacts = async (contactId, thunkApi) => {
+
+const delContact = async (contactId, thunkAPI) => {
   try {
     const response = await axios.delete(`${URL}/${contactId}`);
     return response.data;
-  } catch (error) {
-    return thunkApi.rejectWithValue(error.message);
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e.message);
   }
 };
 
@@ -32,11 +34,13 @@ export const getContactsThunk = createAsyncThunk(
   'phoneBook/getContacts',
   getContacts
 );
-export const postContactsThunk = createAsyncThunk(
+
+export const postContactThunk = createAsyncThunk(
   'phoneBook/postContact',
-  postContacts
+  postContact
 );
-export const delContactsThunk = createAsyncThunk(
+
+export const delContactThunk = createAsyncThunk(
   'phoneBook/delContact',
-  delContacts
+  delContact
 );
