@@ -20,8 +20,9 @@ export const ContactsList = () => {
   const filterPhoneBook = useSelector(getFilter);
 
   const lowerFilter = filterPhoneBook.toLowerCase();
-  const visibleContacts = phoneBook.filter(({ name }) =>
-    name.toLowerCase().includes(lowerFilter)
+  const visibleContacts = phoneBook.filter(
+    ({ name, phone }) =>
+      name.toLowerCase().includes(lowerFilter) || phone.includes(lowerFilter)
   );
 
   const deleteContact = contactId => {
